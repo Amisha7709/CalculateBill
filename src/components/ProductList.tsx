@@ -1,19 +1,13 @@
-import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { addItem } from "../features/cartSlice";
 
 const ProductList = () => {
   const products = useAppSelector((state) => state.products);
+  const cart = useAppSelector((state) => state.cart);
   const dispatch = useAppDispatch();
-
-  const [clickedIds, setClickedIds] = useState<Record<string, boolean>>({});
 
   const handleAdd = (id: string) => {
     dispatch(addItem(id));
-    setClickedIds((prev) => ({
-      ...prev,
-      [id]: true
-    }));
   };
 
   return (
@@ -23,7 +17,7 @@ const ProductList = () => {
 
       <ul className="space-y-3">
         {products.map((product) => {
-          const isClicked = clickedIds[product.id];
+          const isClicked = Boolean(cart[product.id]);
 
           return (
             <li
